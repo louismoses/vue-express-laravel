@@ -9,10 +9,18 @@ const form = ref({
 
 const onSubmit = async () => {
   try {
-    const response = await axios.post("http://localhost:3000/login", {
-      username: form.value.username,
-      password: form.value.password,
-    });
+    const response = await axios.post(
+      "http://localhost:3000/login",
+      {
+        name: form.value.username,
+        password: form.value.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log(response.data);
   } catch (error) {
@@ -25,7 +33,7 @@ const onSubmit = async () => {
 const onRegister = async () => {
   try {
     const response = await axios.post("http://localhost:3000/register", {
-      username: form.value.username,
+      name: form.value.username,
       password: form.value.password,
     });
 

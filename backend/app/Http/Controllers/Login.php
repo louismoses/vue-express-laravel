@@ -11,28 +11,27 @@ class Login extends Controller
 {
     public function login(Request $request)
     {
-        $password =   Hash::make($request->input('password'));
-        $credentials = request(['username', $password]);
 
-        // Attempt to authenticate the user
+        $credentials = compact('name', 'password');
+
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            if ($user->role === 'admin') {
-                $token = $user->createToken('AdminToken')->accessToken;
-
-                return response()->json(['token' => $token]);
-            }
-
-            return response()->json($user);
+            $token = Auth::user()->createToken('auth-token')->plainTextToken;
+            return response()->json(['token' => $token]);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'Invalid credentials']);
     }
-
     public function register(Request $request)
     {
         $password = Hash::make($request->input('password'));
-        $newuser = request(['username', $password]);
+
+        $newUser = [
+            'name' => $request->input('username'),
+            'password' => $password,
+        ];
+
+        User::create($newUser);
+
+        return response()->json(['message' => 'User registered successfully']);
     }
 }

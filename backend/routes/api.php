@@ -25,5 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/hello', function () {
     return response()->json(['message' => 'hello']);
 });
+
 Route::post('/login', [Login::class, 'login']);
-Route::post('/register', [Login::class, 'login']);
+
+Route::post('/register', [Login::class, 'register']);
